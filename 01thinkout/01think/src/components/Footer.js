@@ -18,7 +18,7 @@ export default function Footer() {
             </div>
             <div className="row">
                 <div className="col-lg-12">
-                    <p className="copyright">&copy; TemplateMo 2020</p>
+                    <p className="copyright">&copy; Oddino 2022</p>
                 </div>
             </div>
         </div>

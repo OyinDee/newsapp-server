@@ -1,5 +1,6 @@
 const express= require('express') //importing express and putting into variable/constant express
 const app = express();
+
 const bodyParser=require('body-parser')
 const mongoose = require("mongoose")
 const path = require("path");
@@ -10,8 +11,13 @@ require('dotenv').config()
 const formidable = require('formidable')
 const cloudinary = require('cloudinary')
 app.use(express.static(__dirname+'/public'))
+
+app.use(express.static(path.resolve(__dirname, "./build")));
+app.use(express.static(__dirname+'/build/static'))
 const cors = require('cors')
 app.use(cors())
+
+
 const userSchema= new mongoose.Schema(
     {
         fullname:String,
@@ -22,7 +28,37 @@ const userSchema= new mongoose.Schema(
         
     }
 )
+const feedbackSchema= new mongoose.Schema(
+    {
+        fullname:String,
+        email:String,
+        feedback:String
+    }
+)
+const userDeletedPostSchema = new mongoose.Schema({
+    username: String,
+    postContent: String,
+    time: String,
+    date: String
+})
+const userApprovedPostSchema = new mongoose.Schema({
+    username: String,
+    postContent: String,
+    time: String,
+    date: String
+})
+const userPostSchema = new mongoose.Schema({
+    username: String,
+    postContent: String,
+    time: String,
+    date: String
+})
 const userModel= mongoose.model("user", userSchema)
+const userPostModel = mongoose.model("prepost", userPostSchema)
+const userApprovedPostModel = mongoose.model("post", userApprovedPostSchema)
+const userDeletedPostModel = mongoose.model("deletedpost", userDeletedPostSchema)
+const feedbackModel = mongoose.model("feedback", feedbackSchema)
+
 app.use(bodyParser.json())
 cloudinary.config({ 
     cloud_name: process.env.CLOUD_NAME, 
@@ -45,7 +81,10 @@ const PORT= process.env.PORT
 app.listen(PORT, ()=>{console.log(`app is running on port ${PORT}`)})
 
 app.get('/',(request,response)=>{
-    response.send('Hi')
+    response.sendFile(path.resolve(__dirname, './build', 'index.html'))
+    io.on('connection', (result) => {
+        console.log(result)
+    });
 })
 app.post('/signup',(request,response)=>{
     const newUserForm=request.body
@@ -86,15 +125,19 @@ app.post('/login',(request, response)=>{
         username:loginform.username,
         password:loginform.password
     }
-    let found= userModel.find({username: newLogin.username},(err,result)=>{
+
+    const usernameee = loginform.username
+    let found= userModel.find({username: usernameee},(err,result)=>{
         if (err) {
-                    console.log(err.message)
-                }
-                else if(result.length==0){
+            console.log(err.message)
+        }
+        else if(result.length==0){
                     console.log("Nothing")
-                    response.send({message: "Tadaah! You actually have no account with me!",result})
+                    response.send({message: `Dear ${usernameee}, you do not have an account here...`,result})
+
                 }
                 else if(result){
+                    const zeroorone=(result[0].zeroorone)
                     const username=(result[0].username)
                     const passw=result[0].password;
                     const myPlaintextPassword = newLogin.password;
@@ -105,8 +148,9 @@ app.post('/login',(request, response)=>{
                         if(result==true){
                             jwt.sign({username},  process.env.JWT_SECRET, function(err, token) {
                                 console.log(token);
-                                response.send({message:"Your login is successful!",result,token,username})
+                                response.send({message:"Your login is successful!",result,token,username,zeroorone})
                             });
+                            
                         }
                         else{
                             response.send({message:"I don't know what's up, but your password is definitely wrong!",result})
@@ -121,4 +165,105 @@ app.post('/login',(request, response)=>{
 
 
             })
+})
+app.get('/dashcheck',(request,response)=>{
+    const auth= request.headers.authorization
+    const token = auth.split(' ')[1]
+    console.log(token)
+    jwt.verify(token,process.env.JWT_SECRET,(err,decoded)=>{
+        if(err){
+            console.log(`jwt could not be decoded`)
+            response.send({message:err.message})
+        }  
+        else{
+            console.log(decoded.username)
+            response.send({message:'verification successful', username:decoded.username})
+        }
+    })
+})
+app.post('/adminapproval', (request,response)=>{
+    console.log(request.body.time)
+    response.send(request.body)
+    const newPost={
+        username: request.body.username,
+        postContent: request.body.idea,
+        time: request.body.time,
+        date: request.body.fullDate
+    }
+    console.log(request.body)
+    let sendToAdmin=new userPostModel(newPost)
+    console.log(sendToAdmin)
+    sendToAdmin.save()
+})
+app.get('/admincheck', (request,response)=>{
+    let found= userPostModel.find((err,result)=>{
+        response.send(result)
+    })
+})
+app.post('/approvepost', (request,response)=>{
+    const id=request.body.id    
+    userPostModel.find({_id: id},(err,result)=>{
+        console.log(request.body)
+        const post=result[0]
+        const newPost={
+            username: post.username,
+            postContent: post.postContent,
+            time: post.time,
+            date: post.date
+        }
+        // console.log(newPost)
+        let sendToNewsfeed=new userApprovedPostModel(newPost)
+        // console.log(sendToNewsfeed)
+        sendToNewsfeed.save()
+        userPostModel.deleteOne({_id:post._id},(err,result)=>{
+        })
+    })
+})
+app.post('/deletepost', (request,response)=>{
+    const id=request.body.id    
+    userPostModel.find({_id: id},(err,result)=>{
+            // console.log(result)
+            const post=result[0]
+            const newPost={
+                username: post.username,
+                postContent: post.postContent,
+                time: post.time,
+                date: post.date
+            }
+            // console.log(newPost)
+            let sendToDelposts=new userDeletedPostModel(newPost)
+            // console.log(sendToNewsfeed)
+            sendToDelposts.save()
+            userPostModel.deleteOne({_id:post._id},(err,result)=>{
+            })
+        })
+})            
+app.get('/userscheck', (request,response)=>{
+            let found= userApprovedPostModel.find((err,result)=>{
+                response.send(result)
+            })
+            app.post('/getUserType',(request,response)=>{
+                console.log(request.body)
+                const username=request.body.username
+    let found= userModel.find({username: username},(err,result)=>{
+        response.send(result[0].zeroorone)
+    })                
+            })
+})
+// app.post('/chat', (request,response)=>{
+// const username=request.body.username
+// console.log(`${username} entered the chat`)
+// })
+
+
+app.post('/feedback', (request,response)=>{
+    const newFeedback={
+        fullname: request.body.fullname,
+        email: request.body.email,
+        feedback: request.body.feedback       
+    }
+    console.log(request.body)
+    let theFeedback=new feedbackModel(newFeedback)
+    console.log(theFeedback)
+    theFeedback.save()
 })

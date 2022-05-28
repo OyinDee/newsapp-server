@@ -14,33 +14,65 @@ export default function Signup() {
     const[zeroorone, setzeroorone]= useState(0)
     const[userPart, setUserPart]= useState('')
     const [message, setMessage] = useState('')    
+    const [loading, setLoading] = useState(false)              
+    const token=localStorage.token
+    useEffect(() => {
+        axios.get('https://o1think.herokuapp.com/dashcheck', {
+            headers:{
+                'Authorization':`Bearer ${token}`,
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            }
+        }
+    ).then((response)=>{
+        if(localStorage.token&&response.data.message=='verification successful'){
+        navigate('/thinkers/home')
+            localStorage.username=response.data.username
+        }
+        else{
+        }
+    }).catch((err)=>{
+        console.log(err)
+    })
+    }, [username])
     const tryToSignup=()=>{
+        setLoading(true)        
         if(fullname===""||email===""||username===""||password===""||userPart===""){
             setMessage('Something is wrong, a field is empty!')
+        setLoading(false)             
         }
         else{
             let userDetails={
                 fullname, email,username,password,zeroorone
             }
-            axios.post('https://ohonethink.herokuapp.com/signup', userDetails).then((response) => {
+            axios.post('https://o1think.herokuapp.com/signup', userDetails).then((response) => {
                 console.log(response);
                 if(response.data.text==="no"){
                 setMessage(response.data.message)
                 if(response.data.message==="Username already exists."){
                     setUsername('')
                     setStyle("style1");
+                    setLoading(false)        
+                    
                 }
                 else if(response.data.message==="Email already exists."){
                     setEmail('')
                     setStylee("style1");                
+                    setLoading(false)           
                 }
             }
             else if(response.data.text==="yes"){
-                navigate('/login')
+                navigate('/login')    
+                setLoading(false)           
+                          
             }
-        }, (error) => {
-            console.log(error)
-            setMessage('Check your network connection and try again!')
+        }).catch((error)=>{
+            if (error.message==='timeout exceeded') {
+                    setMessage("Check your internet connection and try again.")
+            } else {
+                setMessage(error.message)       
+            }
+            setLoading(false)                                             
         });
     }
 }
@@ -119,8 +151,17 @@ export default function Signup() {
 </div>
 </form>
 <div className="col-lg-6 col-md-12 col-sm-12">
+<div className="loadingornot">
 <fieldset>
-<button id="form-submit" className="main-buttonn" onClick={tryToSignup}>Get started</button>
+
+{loading ? (
+    <div className="rotateBall"></div>
+) : (
+    <button id="form-submit" className="main-button" onClick={tryToSignup}>Get started</button>
+)}
+</fieldset>
+</div>
+<fieldset>
 <div className="main-text-space"><Link to='/login' className="theCenter">Log in instead</Link></div>
 </fieldset>
 </div>

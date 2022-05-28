@@ -21,7 +21,7 @@ export default function Footer2() {
                     <p className="copyright">
                     "Have fun, Develop, Colab"
                     <br/>
-                    &copy; Oddino, 2022</p>
+                    &copy; Oddino 2022</p>
                 </div>
             </div>
         </div>
