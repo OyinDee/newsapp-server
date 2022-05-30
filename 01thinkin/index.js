@@ -16,8 +16,6 @@ app.use(express.static(path.resolve(__dirname, "./build")));
 app.use(express.static(__dirname+'/build/static'))
 const cors = require('cors')
 app.use(cors())
-
-
 const userSchema= new mongoose.Schema(
     {
         fullname:String,
@@ -74,7 +72,7 @@ mongoose.connect(url, (err)=>{
         console.log("Error");
     }
     else{
-        console.log("working");
+        console.log("mongoose don connect sha");
     }
 })
 const PORT= process.env.PORT

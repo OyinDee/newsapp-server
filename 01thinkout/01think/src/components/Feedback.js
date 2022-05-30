@@ -19,7 +19,6 @@ export default function Feedback() {
         }
         else{
             setRow(false)
-            
             axios.post('http://o1think.herokuapp.com/feedback', {email: email,fullname:fullname,feedback:feedback}).then( 
                     setEmail(''),
                     setFeedback(''),
