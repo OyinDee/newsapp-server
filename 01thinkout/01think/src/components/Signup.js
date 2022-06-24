@@ -14,7 +14,8 @@ export default function Signup() {
     const[zeroorone, setzeroorone]= useState(0)
     const[userPart, setUserPart]= useState('')
     const [message, setMessage] = useState('')    
-    const [loading, setLoading] = useState(false)              
+    const [loading, setLoading] = useState(false)    
+    const [dort, setDort] = useState(false)                            
     const token=localStorage.token
     useEffect(() => {
         axios.get('https://o1think.herokuapp.com/dashcheck', {
@@ -41,6 +42,11 @@ export default function Signup() {
             setMessage('Something is wrong, a field is empty!')
         setLoading(false)             
         }
+        else if(dort===false){
+            setLoading(false)
+            setMessage('Sigh... Are you a developer or thinker?')      
+            setUserPart('')
+        }
         else{
             let userDetails={
                 fullname, email,username,password,zeroorone
@@ -53,18 +59,20 @@ export default function Signup() {
                     setUsername('')
                     setStyle("style1");
                     setLoading(false)        
-                    
                 }
                 else if(response.data.message==="Email already exists."){
                     setEmail('')
                     setStylee("style1");                
                     setLoading(false)           
                 }
+                else if(response.data.message==="Email already exists."){
+                    setUserPart()            
+                    setLoading(false)           
+                }
             }
             else if(response.data.text==="yes"){
                 navigate('/login')    
-                setLoading(false)           
-                          
+                setLoading(false)             
             }
         }).catch((error)=>{
             if (error.message==='timeout exceeded') {
@@ -83,12 +91,15 @@ export default function Signup() {
             const checkUser=()=>{
                 if(userPart==="Developer"||userPart==="developer"){
                     setzeroorone(1)
+                    setDort(true)
                 }
                 else if(userPart==="Thinker"||userPart==="thinker"){
                     setzeroorone(0)
+                    setDort(true)
                 }
                 else{
                     setMessage("Make sure your part in this community is spelt correctly!")
+                    setDort(false)                    
                 }
             }
     

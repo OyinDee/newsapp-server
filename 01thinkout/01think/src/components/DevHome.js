@@ -9,10 +9,20 @@ import {changename} from '../actions/change'
 import Footer from '../components/Footer'
 export default function DevHome() {
     const [posts, setPosts]= useState([])
+    const [idea, setIdea] = useState('')
+    const [messageforyou, setMessageforyou] = useState('')
     const token = localStorage.token;
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const username= localStorage.username;
+    const mm= new Date().getMinutes();
+    const ss= new Date().getSeconds();
+    const hh= new Date().getHours();
+    const time= `${hh}:${mm}:${ss}`
+    const date=new Date().getDate(); 
+    const month=new Date().getMonth();   
+    const year=new Date().getFullYear();   
+    const fullDate=(`${date}/${month+1}/${year}`)
     
     useEffect(() => {
         axios.get('https://o1think.herokuapp.com/dashcheck', {
@@ -52,12 +62,38 @@ export default function DevHome() {
     })
 
     }, [username, dispatch, navigate, token])
+    const ideadetail={
+        idea,time,username,fullDate
+    }
+const tryToSubmit=()=>{
+        if(idea===''){
+        setMessageforyou(`Blank, isn't it?`)            
+        }
+        else{
+            axios.post('https://o1think.herokuapp.com/adminapproval', ideadetail).then((response)=>{
+                console.log(response)
+            })
+            setIdea('')
+            setMessageforyou('Received, Thank you!')
 
+        }
+    }
     return (
         <>
         <DevNav/>
+        <section className="section colored" style={{marginBottom:"-20vh"}}>
+        <div className="container" > 
+        {messageforyou}
+        <div className="yourIdeaCont">
+        <form action="" method="post">
+        <textarea name="" onChange={(e)=>setIdea(e.target.value)} className="yourIdea" id="" cols="30" rows="10" placeholder="Type in your thoughts, bugs, or announcements, it will be considered and added to the users' feed as soon as we can!" value={idea}>
+        </textarea>
+        </form>
+        <button className="submitIdea btn btn-outline-secondary" onClick={tryToSubmit}>Submit</button>
+        </div>
+        </div>
+        </section>
         <div className="devPagePosts"/>
-        
         <section className="section colored">
         <section className="profile-feed">
         {posts.map((val, i) => (

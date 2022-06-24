@@ -1,12 +1,12 @@
 import React from 'react'
+import {useEffect, useState} from "react"
+import {Link, useNavigate} from "react-router-dom"
+import axios from 'axios'
 import Footer2 from './Footer2'
 import Nav2 from './Nav2'
 import Nav from './Nav'
 import Footer from './Footer'
-import axios from 'axios'
 import {useSelector,useDispatch} from "react-redux"
-import {useEffect, useState} from "react"
-import {Link, useNavigate} from "react-router-dom"
 import {changename} from '../actions/change'
 
 

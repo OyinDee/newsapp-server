@@ -326,7 +326,7 @@ a.main-button-slider {
   font-size: 13px;
   border-radius: 20px;
   padding: 12px 20px;
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+    background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
   text-transform: uppercase;
   color: #fff;
   letter-spacing: 0.25px;
@@ -337,14 +337,14 @@ a.main-button-slider {
 }
 
 a.main-button-slider:hover {
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+    background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
 }
 
 a.main-button {
   font-size: 13px;
   border-radius: 20px;
   padding: 12px 20px;
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+    background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
   text-transform: uppercase;
   color: #fff;
   letter-spacing: 0.25px;
@@ -355,7 +355,7 @@ a.main-button {
 }
 
 a.main-button:hover {
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+    background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
 }
 button.main-buttonn {
   outline: none;
@@ -364,7 +364,7 @@ button.main-buttonn {
   font-size: 13px;
   border-radius: 20px;
   padding: 10px 97px;
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+    background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
   text-transform: uppercase;
   color: #fff;
   letter-spacing: 0.25px;
@@ -380,7 +380,7 @@ button.main-buttonnn {
   font-size: 13px;
   border-radius: 20px;
   padding: 15px 0;
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+    background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
   text-transform: uppercase;
   color: #fff;
   width: 100%;
@@ -397,7 +397,7 @@ button.main-button {
   font-size: 13px;
   border-radius: 20px;
   padding: 12px 20px;
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+    background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
   text-transform: uppercase;
   color: #fff;
   letter-spacing: 0.25px;
@@ -407,10 +407,10 @@ button.main-button {
   transition: all 0.3s ease 0s;
 }
 button.main-buttonn:hover {
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+    background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
 }
 button.main-button:hover {
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+    background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
 }
 
 
@@ -720,7 +720,7 @@ welcome
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+  background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover; 
@@ -845,11 +845,11 @@ features
 }
 
 .features-small-item:hover .icon {
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
 }
 
 .features-small-item .icon {
   -webkit-transition: all 0.3s ease 0s;
+  background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
@@ -859,7 +859,6 @@ features
   margin: auto;
   position: relative;
   margin-bottom: 30px;
-  background: #ff589e;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
@@ -934,7 +933,7 @@ parallax & home seperator
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-  background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+  background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
   background-blend-mode: soft-light;
   z-index: 2;
   top: -20%;
@@ -1058,7 +1057,7 @@ parallax & home seperator
   width: 140%;
   height: 140%;
   opacity: .90;
-  background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+  background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
@@ -1292,7 +1291,7 @@ pricing
 }
 
 .pricing-item.active .pricing-body .price-wrapper {
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+    background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
 }
 
 .pricing-item.active .pricing-body .price-wrapper .currency {
@@ -1520,7 +1519,7 @@ footer
 --------------------------------------------- 
 */
 footer {
-  background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+  background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
   padding-top: 30px;
 }
 
@@ -1552,7 +1551,7 @@ footer .social li a {
 }
 
 footer .social li a:hover {
-    background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+    background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
   color: #fff;
 }
 
@@ -1687,7 +1686,7 @@ preloader
     font-size: 13px;
     border-radius: 20px;
     margin-left: auto;
-      background-image: linear-gradient(127deg, #a759d1 0%, #ff589e 91%);
+      background-image: linear-gradient(127deg, rgb(10, 0, 102) 60%, #9e28dd 91%);
     text-transform: uppercase;
     color: #fff;
     letter-spacing: 0.25px;
