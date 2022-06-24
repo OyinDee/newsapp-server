@@ -68,7 +68,7 @@ export default function Chatbox({socket}) {
 }).then(()=>{
 
   const username=localStorage.username
-  axios.post('http://localhost:1111/chat',{username:username}).then(()=>{
+  axios.post('https://o1think.herokuapp.com/chat',{username:username}).then(()=>{
     
   })
 })
