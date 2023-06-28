@@ -53,11 +53,28 @@ const userPostSchema = new mongoose.Schema({
     time: String,
     date: String
 })
+const userProfileSchema = new mongoose.Schema({
+    fullName: String,
+    email: String,
+    phoneNumber:String,
+    address:String,
+    userName: String,
+    bio: String,
+    fbLink:String,
+    twitterLink:String,
+    igLink:String,
+    gitHubLink:String,
+    website:String,
+    dateofbirth:Date,
+    img:String,
+    username:String
+})
 const userModel= mongoose.model("user", userSchema)
 const userPostModel = mongoose.model("prepost", userPostSchema)
 const userApprovedPostModel = mongoose.model("post", userApprovedPostSchema)
 const userDeletedPostModel = mongoose.model("deletedpost", userDeletedPostSchema)
 const feedbackModel = mongoose.model("feedback", feedbackSchema)
+const userProfileModel= mongoose.model("profile", userProfileSchema)
 
 app.use(bodyParser.json())
 cloudinary.config({ 
@@ -177,6 +194,39 @@ app.post('/signup',(request,response)=>{
                 }
             })
         })
+        app.get('/geteverything', (request,response)=>{
+            const all={}
+            userModel.find({zeroorone:1}, (err,result)=>{
+                
+                if(result){
+                    
+                    const c=result.length
+                    all.c=c
+                    console.log(all)
+                    
+                    
+                }
+            })
+            
+            userApprovedPostModel.find((err,result)=>{
+                
+                if(result){
+                    const a=result.length
+                            all.a=a   
+                            console.log(all)
+                        }
+                    }) 
+                    userModel.find({zeroorone:0}, (err,result)=>{
+        
+                        if(result){
+                            
+                            const d=result.length
+                            response.send(all)
+                            all.d=d
+                        }
+                        
+                    })
+                })
         app.post('/adminapproval', (request,response)=>{
             console.log(request.body.time)
             response.send(request.body)
@@ -195,6 +245,23 @@ app.post('/signup',(request,response)=>{
             let found= userPostModel.find((err,result)=>{
                 response.send(result)
             })
+        })
+        app.post('/getprofile', (request,response)=>{
+            userProfileModel.findOne({username: request.body.username},(err,result)=>{
+                if(result){
+                    console.log(result)
+                    response.send(result)
+                    console.log("Profile exists")
+                    }
+                    else if(err) {
+                        response.send("An error occurred")
+                    }
+                else{
+
+                    response.send("not found")
+                    console.log("No profile found")
+                }
+                })
         })
         app.post('/approvepost', (request,response)=>{
             const id=request.body.id    
@@ -215,6 +282,44 @@ app.post('/signup',(request,response)=>{
         })
     })
 })
+    app.post('/changeprofile',(request,response)=>{
+        console.log(request.body)
+        let formm = new userProfileModel(request.body)    
+        found=userProfileModel.findOne({username: request.body.username},(err,result)=>{
+            if(result){
+                console.log(result)
+                console.log("Profile exists")
+                userProfileModel.deleteOne({username:request.body.username},(result,err)=>{
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        console.log(result)
+                    }
+                })
+                response.send({message:"Updated"})
+                formm.save().then((err,result)=>{
+                    if (result) {
+                        console.log(result)
+                    } else {
+                        console.log(err)
+                    }
+                })
+            }
+            else if(err){
+                console.log(err.message)
+            }
+            else{
+                response.send({message: "added"})
+                formm.save().then((err,result)=>{
+                    if (result) {
+                        console.log(result)
+                    } else {
+                        console.log(err)
+                    }
+                })
+            }
+        })     
+    })
 app.post('/deletepost', (request,response)=>{
     const id=request.body.id    
     userPostModel.find({_id: id},(err,result)=>{
@@ -238,13 +343,13 @@ app.get('/userscheck', (request,response)=>{
     let found= userApprovedPostModel.find((err,result)=>{
         response.send(result)
     })
-    app.post('/getUserType',(request,response)=>{
-        console.log(request.body)
-        const username=request.body.username
-        let found= userModel.find({username: username},(err,result)=>{
-            response.send(result[0].zeroorone)
-        })                
-    })
+})
+app.post('/getUserType',(request,response)=>{
+    console.log(request.body)
+    const username=request.body.username
+    let found= userModel.find({username: username},(err,result)=>{
+        response.send(result[0].zeroorone)
+    })                
 })
 const io = Server(connection, {cors:{options:'*'}})
     io.on('connection', (socket) => {
